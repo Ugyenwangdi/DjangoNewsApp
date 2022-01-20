@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>News for you</title>
+
+    <style>
+        body {
+            margin: 0rem 4rem;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+        
+        a:focus {
+            color: black;
+        }
+        
+        .header {
+            margin-top: 5px;
+            width: 100%;
+            border-radius: 5px;
+            padding: 2px;
+            background: darkgrey;
+            text-align: center;
+        }
+        
+        .search__container {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        
+        .search__box {
+            display: grid;
+            padding-left: 4px;
+            padding-right: 4px;
+            grid-template-columns: repeat(2, 1fr);
+            justify-content: center;
+        }
+        
+        .search__container__item {
+            margin: 0.5rem;
+            border: 1px solid #111111c9;
+        }
+        
+        .search-title {
+            position: relative;
+            font-size: 1.5rem;
+            color: #3f3f3f;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .search__name {
+            display: inline-block;
+            font-size: 1rem;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            padding: .25rem .5rem;
+            background-color: #F0F8FF;
+            border-radius: .25rem;
+        }
+        
+        .search__name:hover {
+            cursor: pointer;
+            background-color: #9fa09d;
+            color: #fff;
+        }
+        
+        .container {
+            margin: 0;
+            padding: 10px;
+        }
+        
+        .list {
+            margin: 8px 5px;
+            border: 1px solid #111111c9;
+            padding: 10px;
+        }
+        
+        @media screen and (min-width: 768px) {
+            body {
+                margin: 0rem 10rem;
+            }
+            a:focus {
+                color: black;
+            }
+            .header {
+                margin-top: 5px;
+                width: 100%;
+                border-radius: 5px;
+                padding: 10px;
+            }
+            .search__container {
+                display: grid;
+                width: 100%;
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .search__box {
+                display: grid;
+                padding-left: 4px;
+                padding-right: 4px;
+                grid-template-columns: repeat(4, 1fr);
+                justify-content: center;
+            }
+        }
+        
+        @media screen and (min-width: 992px) {
+            body {
+                margin: 0rem 10rem;
+            }
+            a:focus {
+                color: black;
+            }
+            .header {
+                margin-top: 5px;
+                width: 100%;
+                border-radius: 5px;
+                padding: 10px;
+            }
+            .search__container {
+                display: grid;
+                width: 100%;
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .search__box {
+                padding-left: 4px;
+                padding-right: 4px;
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media screen and (min-width: 1024px) {
+            body {
+                margin: 0rem 17rem;
+            }
+            a:focus {
+                color: black;
+            }
+            .header {
+                margin-top: 5px;
+                width: 100%;
+                border-radius: 5px;
+                padding: 12px;
+            }
+            .search__container {
+                display: grid;
+                width: 100%;
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .search__box {
+                padding-left: 4px;
+                padding-right: 4px;
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media screen and (min-width: 1224px) {
+            a:focus {
+                color: black;
+            }
+            .search__box {
+                padding-left: 4px;
+                padding-right: 4px;
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="shortcut icon" href="{% static 'assets\img\favicon.ico' %}">
+</head>
+
+<body>
+    <div class="header">
+        <h1><a href="{% url 'home' %}">What's the News?</a></h1>
+    </div>
+
+    <div class="container">
+
+        {% if error == None %} {% for title, description, url, author, date in all_news %}
+
+        <div class="list">
+            <a href="{{ url }}">
+                <h4 class="post-title">{{ title }}</h2>
+            </a>
+            <p class="post-subtitle">{{ description }}</p>
+
+            <p>Posted by <a href="#">{{ author }}</a> on {{ date }}</p>
+        </div>
+
+        <!-- Divider-->
+
+        {% endfor %} {% else %}
+        <div class="list">
+            <h4 class="post-title">{{error}}</h2>
+        </div> {% endif %}
+
+    </div>
+
+
+    <div class="container">
+        <div class="search__container">
+
+            <div class="search__container__item">
+                <h3 class="search-title">Search news by Country</h3>
+
+                <div class="search__box">
+                    <span class="search__name"><a href="?query=country=ar">Argentina</a></span>
+                    <span class="search__name"><a href="?query=country=au">Australia</a></span>
+                    <span class="search__name"><a href="?query=country=at">Austria</a></span>
+                    <span class="search__name"><a href="?query=country=be">Belgium</a></span>
+                    <span class="search__name"><a href="?query=country=br">Brazil</a></span>
+                    <span class="search__name"><a href="?query=country=bg">Bulgaria</a></span>
+                    <span class="search__name"><a href="?query=country=ca">Canada</a></span>
+                    <span class="search__name"><a href="?query=country=cn">China</a></span>
+                    <span class="search__name"><a href="?query=country=co">Colombia</a></span>
+                    <span class="search__name"><a href="?query=country=cu">Cuba</a></span>
+                    <span class="search__name"><a href="?query=country=cz">Czech Republic</a></span>
+                    <span class="search__name"><a href="?query=country=eg">Egypt</a></span>
+                    <span class="search__name"><a href="?query=country=fr">France</a></span>
+                    <span class="search__name"><a href="?query=country=de">Germany</a></span>
+                    <span class="search__name"><a href="?query=country=gr">Greece</a></span>
+                    <span class="search__name"><a href="?query=country=hk">Hong Kong</a></span>
+                    <span class="search__name"><a href="?query=country=hu">Hungary</a></span>
+                    <span class="search__name"><a href="?query=country=in">India</a></span>
+                    <span class="search__name"><a href="?query=country=id">Indonesia</a></span>
+                    <span class="search__name"><a href="?query=country=ie">Ireland</a></span>
+                    <span class="search__name"><a href="?query=country=il">Israel</a></span>
+                    <span class="search__name"><a href="?query=country=it">Italy</a></span>
+                    <span class="search__name"><a href="?query=country=jp">Japan</a></span>
+                    <span class="search__name"><a href="?query=country=lv">Latvia</a></span>
+                    <span class="search__name"><a href="?query=country=lt">Lithuania</a></span>
+                    <span class="search__name"><a href="?query=country=my">Malaysia</a></span>
+                    <span class="search__name"><a href="?query=country=mx">Mexico</a></span>
+                    <span class="search__name"><a href="?query=country=ma">Morocco</a></span>
+                    <span class="search__name"><a href="?query=country=nl">Netherlands</a></span>
+                    <span class="search__name"><a href="?query=country=nz">New Zealand</a></span>
+                    <span class="search__name"><a href="?query=country=ng">Nigeria</a></span>
+                    <span class="search__name"><a href="?query=country=no">Norway</a></span>
+                    <span class="search__name"><a href="?query=country=ph">Philippines</a></span>
+                    <span class="search__name"><a href="?query=country=pl">Poland</a></span>
+                    <span class="search__name"><a href="?query=country=pt">Portugal</a></span>
+                    <span class="search__name"><a href="?query=country=ro">Romania</a></span>
+                    <span class="search__name"><a href="?query=country=ru">Russia</a></span>
+                    <span class="search__name"><a href="?query=country=sa">Saudi Arabia</a></span>
+                    <span class="search__name"><a href="?query=country=rs">Serbia</a></span>
+                    <span class="search__name"><a href="?query=country=sg">Singapore</a></span>
+                    <span class="search__name"><a href="?query=country=sk">Slovakia</a></span>
+                    <span class="search__name"><a href="?query=country=si">Slovenia</a></span>
+                    <span class="search__name"><a href="?query=country=za">South Africa</a></span>
+                    <span class="search__name"><a href="?query=country=kr">South Korea</a></span>
+                    <span class="search__name"><a href="?query=country=se">Sweden</a></span>
+                    <span class="search__name"><a href="?query=country=ch">Switzerland</a></span>
+                    <span class="search__name"><a href="?query=country=tw">Taiwan</a></span>
+                    <span class="search__name"><a href="?query=country=th">Thailand</a></span>
+                    <span class="search__name"><a href="?query=country=tr">Turkey</a></span>
+                    <span class="search__name"><a href="?query=country=ae">UAE</a></span>
+                    <span class="search__name"><a href="?query=country=ua">Ukraine</a></span>
+                    <span class="search__name"><a href="?query=country=gb">United Kingdom</a></span>
+                    <span class="search__name"><a href="?query=country=us">United States</a></span>
+                    <span class="search__name"><a href="?query=country=ve">Venuzuela</a></span>
+                </div>
+            </div>
+            <div class="search__container__item">
+                <h3 class="search-title">Search news by Categories</h3>
+
+                <div class="search__box">
+                    <span class="search__name"><a href="?query=category=business">Business</a></span>
+                    <span class="search__name"><a href="?query=category=entertainment">Entertainment</a></span>
+                    <span class="search__name"><a href="?query=category=business">Health</a></span>
+                    <span class="search__name"><a href="?query=category=business">Science</a></span>
+                    <span class="search__name"><a href="?query=category=business">Sports</a></span>
+                    <span class="search__name"><a href="?query=category=business">Technology</a></span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</body>
+
+</html>
