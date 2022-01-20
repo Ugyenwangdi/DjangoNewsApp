@@ -1,0 +1,168 @@
+Building a news app using newsapi and Django.
+
+This article will show how we can build a simple news app using Django and News api. The project is easy and a great beginner project to django and python. 
+
+We will use newsapi to show the latest news of different category. We can fetch the top headlines from different sources and this project will use django to get the news headline along with the link and display it so that we can click the link to read the full story.
+
+1/ Wake sure to have a new folder to store this project. We need to set up an an environment so that we can install the packages for our project in it. Run the following commands in terminal inside the folder we have for our project.
+$ python -m venv env
+$ env\Scripts\activate
+
+2/ Install django and newsapi packages
+$ pip install django
+$ pip install newsapi-python
+
+3/ Now we will create our project:
+$ django-admin startproject news 
+
+4/ cd into the news directory. Create the newsapp using the command:
+$ python manage.py startapp newsapp
+
+- add this app to INSTALLED_APPS list in settings.py
+
+5/ Try to run the local server to check if it is running:
+$ python manage.py runserver
+
+This will run our app at http://127.0.0.1:8000/, check it in the browser.
+
+6/ Get the apiKey from https://newsapi.org/. We can use this key to retrieve news data. 
+
+7/ Create the views for the app by opening the views.py file. In the views, we will define a function that requests for the web response. The resposnse will be a json file, so we need to extract the required data from it and render it to a html file. The code will look similar to:
+
+'''
+from django.shortcuts import render
+from newsapi import NewsApiClient 
+
+# Create your views here.
+def home(request):
+    newsapi = NewsApiClient(api_key='yourapikey')
+    topnews = newsapi.get_top_headlines('cnn')   # source=ndtv, bbc-news, cnn,techcrunch,foxnews.
+
+    latest = topnews['articles']
+    print(topnews)
+    title = []
+    desc = []
+    url = []
+    author = []
+    date = []
+
+    for i in range(len(latest)):
+        news = latest[i]
+          
+        title.append(news['title'])
+        desc.append(news['description'])
+        url.append(news['url'])
+        author.append(news['author'])
+        date.append(news['publishedAt'])
+
+    all_news = zip(title, desc, url, author, date)
+
+    context = {
+        'all_news': all_news
+    }
+
+    return render(request, "index.html", context)
+
+
+
+
+'''
+
+In the above, we first imported the libraries and then we defined a function called home which takes in the requests. The function then fetches the top headlines from the source 'cnn' and renders the html template. 
+'''
+newsapi.get_top_headlines(source="cnn")
+
+'''
+- We passed the context that stores the news data.
+
+8/ Create a HTML template.
+- Create a template folder inside the newsapp directory.
+- inside the template folder, create a new file "index.html"
+
+'''
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>News for you</title>
+
+    <style>
+        body {
+            margin: 0rem 20rem;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+        
+        .header {
+            margin-top: 5px;
+            width: 100%;
+            border-radius: 5px;
+            padding: 10px;
+            background: darkgrey;
+            text-align: center;
+        }
+        .container {
+            margin: 0;
+            padding: 10px;
+        }
+        
+        
+        .list {
+            margin: 8px 5px;
+            border: 1px solid #111111c9;
+            padding: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1><a href="{% url 'home' %}">What's the News?</a></h1>
+    </div>
+
+    <div class="container">
+        {% for title, description, url, author, date in all_news %}
+
+        <div class="list">
+            <a href="{{ url }}">
+                <h4 class="post-title">{{ title }}</h2>
+            </a>
+            <p class="post-subtitle">{{ description }}</p>
+
+            <p>Posted by <a href="#">{{ author }}</a> on {{ date }}</p>
+        </div>
+
+        <!-- Divider-->
+
+        {% endfor %}
+
+    </div>
+</body>
+
+</html>
+
+
+'''
+
+9/ Define a path for our view. Go to urls.py file and mention the path to the view.
+'''
+from django.contrib import admin
+from django.urls import path
+from newsapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name ='home'),
+
+]
+
+
+'''
+
+Its finally done, try to run the server using
+$ python manage.py runserver
